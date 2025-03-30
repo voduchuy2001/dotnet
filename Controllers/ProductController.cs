@@ -1,4 +1,5 @@
-﻿using Api.Requests;
+﻿using Api.Attributes;
+using Api.Requests;
 using Api.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ public class ProductController(IProductService productService, IServiceProvider 
     private readonly IServiceProvider _serviceProvider = serviceProvider;
     
     [HttpGet]
+    [HasPermission("get_products")]
     public async Task<IActionResult> GetAll()
     {
         var products = await _productService.GetAllProducts();

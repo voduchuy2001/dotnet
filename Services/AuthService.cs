@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Api.Config;
+using Api.Dtos;
 using Api.Models;
 using Api.Repositories.Interfaces;
 using Api.Requests;
@@ -9,10 +10,10 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Services;
 
-public class AuthService(IAuthRepository authRepository, JWT jwt) : IAuthService
+public class AuthService(IAuthRepository authRepository, Jwt jwt) : IAuthService
 {
     private readonly IAuthRepository _authRepository = authRepository;
-    private readonly JWT _jwt = jwt;
+    private readonly Jwt _jwt = jwt;
 
     public async Task<string> Login(LoginRequest request)
     {
@@ -54,6 +55,38 @@ public class AuthService(IAuthRepository authRepository, JWT jwt) : IAuthService
         
         await _authRepository.RegisterUser(registeredUser);
         return GenerateToken(registeredUser);
+    }
+
+    public async Task<AuthUserDto?> Authenticated(string token)
+    {
+        var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+        var email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+        if (string.IsNullOrEmpty(email))
+        {
+            return null;
+        }
+        var user = await _authRepository.GetAuthenticatedUser(email);
+        if (user is null)
+        {
+            return null;
+        }
+        var formattedAuthUser = new AuthUserDto
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Name = user.Name,
+            Roles = user.Roles
+                .Select(role  => role.Name)
+                .ToList(),
+            Permissions = user.Roles
+                .SelectMany(role => role.Permissions)
+                .Select(permission => permission.Name)
+                .Distinct()
+                .ToList()
+        };
+        
+        return formattedAuthUser;
     }
 
     private string GenerateToken(User user)

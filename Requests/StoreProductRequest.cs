@@ -5,10 +5,10 @@ namespace Api.Requests;
 public class StoreProductRequest
 {
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public required string Name { get; set; }
     
     [JsonPropertyName("description")]
-    public string Description { get; set; }
+    public required string Description { get; set; }
     
     [JsonPropertyName("price")]
     public decimal Price { get; set; }
@@ -17,8 +17,8 @@ public class StoreProductRequest
     public int Stock { get; set; }
     
     [JsonPropertyName("thumb")]
-    public string Thumb { get; set; }
+    public string? Thumb { get; set; }
     
     [JsonPropertyName("images")]
-    public List<string> Images { get; set; }
+    public List<string> Images { get; set; } = [];
 }

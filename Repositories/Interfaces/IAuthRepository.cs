@@ -6,4 +6,5 @@ public interface IAuthRepository
 {
     Task<User?> FindUserByEmail(string email);
     Task<bool> RegisterUser(User user);
+    Task<User?> GetAuthenticatedUser(string email);
 }

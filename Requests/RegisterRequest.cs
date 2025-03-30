@@ -5,11 +5,11 @@ namespace Api.Requests;
 public class RegisterRequest
 {
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public required string Name { get; set; }
     
     [JsonPropertyName("email")]
-    public string Email { get; set; }
+    public required string Email { get; set; }
     
     [JsonPropertyName("password")]
-    public string Password { get; set; }
+    public required string Password { get; set; }
 }

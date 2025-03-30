@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Api.Models;
 
@@ -6,9 +7,11 @@ namespace Api.Models;
 public class Role: Model
 {
     [Column("name")]
-    public string Name { get; set; }
+    [MaxLength(400)]
+    public required string Name { get; set; }
     
     [Column("description")]
+    [MaxLength(1000)]
     public string? Description { get; set; }
     
     public List<User> Users { get; set; } = [];
