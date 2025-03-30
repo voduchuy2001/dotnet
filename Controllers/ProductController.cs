@@ -11,9 +11,9 @@ namespace Api.Controllers;
 public class ProductController(IProductService productService, IServiceProvider serviceProvider) : ControllerBase
 {
     private readonly IProductService _productService = productService;
-    
+
     private readonly IServiceProvider _serviceProvider = serviceProvider;
-    
+
     [HttpGet]
     [HasPermission("get_products")]
     public async Task<IActionResult> GetAll()
@@ -31,7 +31,7 @@ public class ProductController(IProductService productService, IServiceProvider 
         {
             return NotFound();
         }
-        
+
         return Ok(product);
     }
 
@@ -45,7 +45,7 @@ public class ProductController(IProductService productService, IServiceProvider 
         {
             return UnprocessableEntity(result.Errors);
         }
-        
+
         await _productService.CreateProduct(request);
         return StatusCode(201);
     }
@@ -60,7 +60,7 @@ public class ProductController(IProductService productService, IServiceProvider 
         {
             return UnprocessableEntity(result.Errors);
         }
-        
+
         var updatedProduct = await _productService.UpdateProduct(id, request);
         if (updatedProduct is null)
         {
@@ -78,7 +78,7 @@ public class ProductController(IProductService productService, IServiceProvider 
         {
             return NotFound();
         }
-        
+
         return NoContent();
     }
 }

@@ -21,7 +21,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasMany(user => user.Roles)
             .WithMany(role => role.Users)
             .UsingEntity<UserRole>();
-        
+
         // Many to many Role - Permission
         modelBuilder.Entity<Role>()
             .HasMany(role => role.Permissions)

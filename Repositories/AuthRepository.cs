@@ -10,7 +10,7 @@ namespace Api.Repositories;
 public class AuthRepository(AppDbContext context) : IAuthRepository
 {
     private readonly AppDbContext _context = context;
-    
+
     public async Task<User?> FindUserByEmail(string email)
     {
         return await _context.Users.FirstOrDefaultAsync(user => user.Email == email);
@@ -23,7 +23,7 @@ public class AuthRepository(AppDbContext context) : IAuthRepository
         {
             throw new Exception($"Email {user.Email} already exists");
         }
-        
+
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
         return true;

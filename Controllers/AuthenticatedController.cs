@@ -7,7 +7,7 @@ namespace Api.Controllers;
 [Authorize]
 [Route("auth")]
 [ApiController]
-public class AuthenticatedController(IAuthService authService): ControllerBase
+public class AuthenticatedController(IAuthService authService) : ControllerBase
 {
     private readonly IAuthService _authService = authService;
 

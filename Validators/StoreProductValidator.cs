@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Validators;
 
-public class StoreProductValidator: AbstractValidator<StoreProductRequest>
+public class StoreProductValidator : AbstractValidator<StoreProductRequest>
 {
     public StoreProductValidator()
     {
@@ -24,11 +24,11 @@ public class StoreProductValidator: AbstractValidator<StoreProductRequest>
         RuleFor(product => product.Thumb)
             .Must(thumb => string.IsNullOrEmpty(thumb) || thumb.StartsWith("http://") || thumb.StartsWith("https://"))
             .WithMessage("Thumb must be null or a valid URL starting with 'http://' or 'https://'.");
-        
+
         RuleForEach(product => product.Images)
             .Must(image => image.StartsWith("http://") || image.StartsWith("https://"))
             .WithMessage("Each image must be a valid URL starting with 'http://' or 'https://'.");
-        
+
         RuleFor(product => product.Stock)
             .NotNull()
             .WithMessage("Price is required")

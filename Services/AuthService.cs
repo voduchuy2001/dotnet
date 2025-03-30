@@ -27,16 +27,16 @@ public class AuthService(IAuthRepository authRepository, Jwt jwt) : IAuthService
         {
             throw new UnauthorizedAccessException("Invalid email or password");
         }
-        
+
         bool isVerified = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);
         if (!isVerified)
         {
             throw new UnauthorizedAccessException("Invalid email or password");
         }
-        
+
         return GenerateToken(user);
     }
-    
+
     public async Task<string> Register(RegisterRequest request)
     {
         var user = await _authRepository.FindUserByEmail(request.Email);
@@ -52,7 +52,7 @@ public class AuthService(IAuthRepository authRepository, Jwt jwt) : IAuthService
             Email = request.Email,
             Password = hashedPwd
         };
-        
+
         await _authRepository.RegisterUser(registeredUser);
         return GenerateToken(registeredUser);
     }
@@ -77,7 +77,7 @@ public class AuthService(IAuthRepository authRepository, Jwt jwt) : IAuthService
             Email = user.Email,
             Name = user.Name,
             Roles = user.Roles
-                .Select(role  => role.Name)
+                .Select(role => role.Name)
                 .ToList(),
             Permissions = user.Roles
                 .SelectMany(role => role.Permissions)
@@ -85,7 +85,7 @@ public class AuthService(IAuthRepository authRepository, Jwt jwt) : IAuthService
                 .Distinct()
                 .ToList()
         };
-        
+
         return formattedAuthUser;
     }
 
@@ -103,7 +103,7 @@ public class AuthService(IAuthRepository authRepository, Jwt jwt) : IAuthService
             Audience = _jwt.Audience,
             SigningCredentials = new SigningCredentials(_jwt.SigningKey, SecurityAlgorithms.HmacSha256Signature)
         };
-        
+
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }

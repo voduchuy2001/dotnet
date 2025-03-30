@@ -3,13 +3,13 @@ using FluentValidation;
 
 namespace Api.Validators;
 
-public class UpdateProductValidator: AbstractValidator<UpdateProductRequest>
+public class UpdateProductValidator : AbstractValidator<UpdateProductRequest>
 {
     public UpdateProductValidator()
     {
-         RuleFor(product => product.Name)
-            .NotEmpty().WithMessage("Name is required")
-            .MinimumLength(5).WithMessage("Name must be at least 5 characters");
+        RuleFor(product => product.Name)
+           .NotEmpty().WithMessage("Name is required")
+           .MinimumLength(5).WithMessage("Name must be at least 5 characters");
 
         RuleFor(product => product.Description)
             .NotEmpty().WithMessage("Description is required")

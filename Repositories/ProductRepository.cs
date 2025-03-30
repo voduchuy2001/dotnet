@@ -22,8 +22,8 @@ public class ProductRepository(AppDbContext context) : IProductRepository
     public async Task<bool> AddAsync(Product product)
     {
         _context.Products.Add(product);
-         await _context.SaveChangesAsync();
-         return true;
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool?> UpdateAsync(int id, Product product)
@@ -33,7 +33,7 @@ public class ProductRepository(AppDbContext context) : IProductRepository
         {
             return null;
         }
-        
+
         existingProduct.Name = product.Name;
         existingProduct.Description = product.Description;
         existingProduct.Price = product.Price;

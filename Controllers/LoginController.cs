@@ -7,7 +7,7 @@ namespace Api.Controllers;
 
 [Route("auth")]
 [ApiController]
-public class LoginController(IAuthService authService, IServiceProvider serviceProvider): ControllerBase
+public class LoginController(IAuthService authService, IServiceProvider serviceProvider) : ControllerBase
 {
     private readonly IAuthService _authService = authService;
     private readonly IServiceProvider _serviceProvider = serviceProvider;
@@ -21,7 +21,7 @@ public class LoginController(IAuthService authService, IServiceProvider serviceP
         {
             return UnprocessableEntity(result.Errors);
         }
-        
+
         var token = await _authService.Login(request);
         return Ok(token);
     }

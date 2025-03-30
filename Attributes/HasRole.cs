@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Api.Attributes;
 
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
-public class HasRole: Attribute, IAsyncAuthorizationFilter
+public class HasRole : Attribute, IAsyncAuthorizationFilter
 {
     private readonly List<string> _requiredRoles;
     private readonly AllOrAnyEnum _mode;
@@ -39,7 +39,7 @@ public class HasRole: Attribute, IAsyncAuthorizationFilter
         var roles = user.Roles.Select(role => role.Name).ToList();
 
         bool hasAccess = _mode == AllOrAnyEnum.All
-            ? _requiredRoles.All(role => roles.Contains(role)) 
+            ? _requiredRoles.All(role => roles.Contains(role))
             : _requiredRoles.Any(role => roles.Contains(role));
 
         if (!hasAccess)

@@ -7,7 +7,7 @@ namespace Api.Controllers;
 
 [Route("auth")]
 [ApiController]
-public class RegisterController(IAuthService authService, IServiceProvider serviceProvider): ControllerBase
+public class RegisterController(IAuthService authService, IServiceProvider serviceProvider) : ControllerBase
 {
     private readonly IAuthService _authService = authService;
     private readonly IServiceProvider _serviceProvider = serviceProvider;
@@ -21,7 +21,7 @@ public class RegisterController(IAuthService authService, IServiceProvider servi
         {
             return UnprocessableEntity(result.Errors);
         }
-        
+
         var token = await _authService.Register(request);
         return Ok(token);
     }
