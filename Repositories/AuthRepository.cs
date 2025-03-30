@@ -1,4 +1,5 @@
 ﻿using Api.Config;
+using Api.Dtos;
 using Api.Models;
 using Api.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity.Data;
@@ -26,5 +27,13 @@ public class AuthRepository(AppDbContext context) : IAuthRepository
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<User?> GetAuthenticatedUser(string email)
+    {
+        return await _context.Users
+            .Include(user => user.Roles)
+            .ThenInclude(role => role.Permissions)
+            .FirstOrDefaultAsync(user => user.Email == email);
     }
 }

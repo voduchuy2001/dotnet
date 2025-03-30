@@ -1,4 +1,5 @@
-﻿using Api.Requests;
+﻿using Api.Attributes;
+using Api.Requests;
 using Api.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ public class ProductController(IProductService productService, IServiceProvider 
     private readonly IServiceProvider _serviceProvider = serviceProvider;
     
     [HttpGet]
+    [HasPermission("get_products")]
     public async Task<IActionResult> GetAll()
     {
         var products = await _productService.GetAllProducts();
@@ -21,6 +23,7 @@ public class ProductController(IProductService productService, IServiceProvider 
     }
 
     [HttpGet("{id:int}")]
+    [HasPermission("get_product")]
     public async Task<IActionResult> GetById(int id)
     {
         var product = await _productService.GetProductById(id);
@@ -33,6 +36,7 @@ public class ProductController(IProductService productService, IServiceProvider 
     }
 
     [HttpPost]
+    [HasPermission("created_product")]
     public async Task<IActionResult> Create([FromBody] StoreProductRequest request)
     {
         var validator = _serviceProvider.GetRequiredService<IValidator<StoreProductRequest>>();
@@ -47,6 +51,7 @@ public class ProductController(IProductService productService, IServiceProvider 
     }
 
     [HttpPut("{id:int}")]
+    [HasPermission("update_product")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateProductRequest request)
     {
         var validator = _serviceProvider.GetRequiredService<IValidator<UpdateProductRequest>>();
@@ -65,6 +70,7 @@ public class ProductController(IProductService productService, IServiceProvider 
     }
 
     [HttpDelete("{id:int}")]
+    [HasPermission("delete_product")]
     public async Task<IActionResult> Delete(int id)
     {
         var deleted = await _productService.DeleteProduct(id);
