@@ -3,21 +3,14 @@ using System.Text;
 
 namespace Api.Config;
 
-public class JWT
+public class Jwt(IConfiguration configuration)
 {
-    public string SecretKey { get; }
-    public string Issuer { get; }
-    public string Audience { get; }
+    public string SecretKey { get; } = configuration["JwtSettings:SecretKey"] ?? throw new ArgumentNullException("SecretKey is missing");
+    public string Issuer { get; } = configuration["JwtSettings:Issuer"] ?? throw new ArgumentNullException("Issuer is missing");
+    public string Audience { get; } = configuration["JwtSettings:Audience"] ?? throw new ArgumentNullException("Audience is missing");
     public int Expiration { get; } = 60;
 
     public SymmetricSecurityKey SigningKey => new(Encoding.UTF8.GetBytes(SecretKey));
-
-    public JWT(IConfiguration configuration)
-    {
-        SecretKey = configuration["JwtSettings:SecretKey"] ?? throw new ArgumentNullException("SecretKey is missing");
-        Issuer = configuration["JwtSettings:Issuer"] ?? throw new ArgumentNullException("Issuer is missing");
-        Audience = configuration["JwtSettings:Audience"] ?? throw new ArgumentNullException("Audience is missing");
-    }
 
     public TokenValidationParameters GetTokenValidationParameters()
     {
